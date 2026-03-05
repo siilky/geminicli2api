@@ -486,24 +486,8 @@ def build_gemini_payload_from_native(
     Returns:
         Payload ready for Google API
     """
-    native_request["safetySettings"] = DEFAULT_SAFETY_SETTINGS
-
-    if "generationConfig" not in native_request:
-        native_request["generationConfig"] = {}
-
-    if "thinkingConfig" not in native_request["generationConfig"]:
-        native_request["generationConfig"]["thinkingConfig"] = {}
-
-    # Configure thinking for non-image models
-    if "gemini-2.5-flash-image" not in model_from_path:
-        include_thoughts = should_include_thoughts(model_from_path)
-
-        thinking_config = native_request["generationConfig"]["thinkingConfig"]
-        thinking_config["includeThoughts"] = include_thoughts
-
-        # Use auto thinking budget if not specified
-        if "thinkingBudget" not in thinking_config:
-            thinking_config["thinkingBudget"] = -1
+    if 'safetySettings' not in native_request:
+        native_request["safetySettings"] = DEFAULT_SAFETY_SETTINGS
 
     return {
         "model": get_base_model_name(model_from_path),
